@@ -99,6 +99,8 @@ def send_message():
     output_path="output.jpg"
     text=raw_input("what do you want to say")
     Steganography.encode(origional_image,output_path,text)
+    temp=text.split()
+    friends[friend_choice].chats_avg[0]=(friends[friend_choice].chats_avg[0]+len(temp))/(len(friends[friend_choice].chats)+1)
     new_chat=Chatmessage(text,True)
     friends[friend_choice].chats.append(new_chat)
     print "Your secret message image is ready!"
@@ -127,6 +129,7 @@ def read_message():
             print 'Message length exceeded. Message was not saved.'
             print 'Your friend is deleted'
         else:
+
             new_chat = Chatmessage(secret_text, False)
             friends[sender].chats.append(new_chat)
             print "Your secret message has been saved"

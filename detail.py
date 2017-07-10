@@ -10,7 +10,7 @@ class Spy:
         self.is_online = True
         self.chats = []
         self.current_status_message = None
-
+        self.chats_avg=[0,0]
 
 class Chatmessage:
 
@@ -21,7 +21,7 @@ class Chatmessage:
 
 spy = Spy('Neha', 'Ms', 20, 4.5)
 
-friend_one = Spy('Neha', 'Ms.', 20, 4.5)
+friend_one = Spy('Sakshi', 'Ms.', 20, 4.5)
 friend_two = Spy('Riya', 'Ms.', 21, 3.5)
 friend_three = Spy('vishal', 'Mr', 22, 4.0)
 
