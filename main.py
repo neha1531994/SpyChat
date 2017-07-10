@@ -11,6 +11,7 @@ print"Hello! Let\'s get started"
 x = "Do you want to continue as " + colored(spy.salutation, 'red') + " " + colored(spy.name, 'red') + " (Y/N)? "
 y = raw_input(x)
 
+#status message function
 def status(current_status_message):
 
     update_status_message=None
@@ -19,12 +20,11 @@ def status(current_status_message):
     else:
         print "status message is null"
     default=raw_input("Do you want to select from older ones(yes/no)")
-    if default=="no":
+    if default=="no": #here we set condition.
         new_status_message=raw_input("what is your message")
         if len(new_status_message)>0:
             status_messages.append(new_status_message)
             update_status_message=new_status_message
-            status_messages.append(update_status_message)
     elif default=="yes":
         item_position=1
         for message in status_messages:
@@ -45,13 +45,14 @@ def status(current_status_message):
 
 
 # FRIEND_LIST FUNCTION #
+#this function add the new friend in the friend list
 def friend_list():
     friend=Spy('','',0,0)
     friend.name= raw_input("friend_name")
     friend.rating = float(raw_input("rating"))
     friend.age= int(raw_input("age"))
     friend.salutation=raw_input("Mr or Miss")
-    if len(friend.name)>0 and friend.age>=12:
+    if len(friend.name)>0 and friend.age>=12 and friend.rating>=spy.rating:
         print "%s %s is now your friend"%(friend.salutation,friend.name)
         friends.append(friend)
 
@@ -62,8 +63,8 @@ def friend_list():
 
 
 # selection function #
+#By this function we select a friend from friend list for performing a various function on selecting friend
 def select_friend():
-    #print "for select rahul enter 1","for select neha enter 2"
     item_no=0
     for friend in friends:
         print '%d. %s %s aged %d with rating %.2f is online' % (item_no + 1, friend.salutation, friend.name,
@@ -76,17 +77,22 @@ def select_friend():
 
 
 #read chat history
+#this function read the chat history of friends
 def read_chat_history():
    read_for = select_friend()
-   for chat in friends[read_for].chats:
-       b=colored(chat.time.strftime('%A,%d %B %Y %H:%M:%S'),'blue')
-       if chat.sent_by_me:
-         print'[%s] %s: %s' % (b,'you said:',chat.message)
-       else:
-         print '[%s] %s read:%s'%(b,friends[read_for].name,chat.message)
+   if len(friends[read_for].chats) > 0:
+       for chat in friends[read_for].chats:
+           b=colored(chat.time.strftime('%A,%d %B %Y %H:%M:%S'),'blue')
 
+           if chat.sent_by_me:
+               print'[%s] %s: %s' % (b,'you said:',chat.message)
+           else:
+               print '[%s] %s read:%s'%(b,friends[read_for].name,chat.message)
+   else:
+        print "no chat history "
 
 #send a message
+#this function send a message to a
 def send_message():
     friend_choice=select_friend()
     origional_image= raw_input("what is the name of the image")
@@ -103,7 +109,11 @@ def send_message():
 def read_message():
     sender = select_friend()
     output_path = raw_input("What is the name of the file?")
-    secret_text = Steganography.decode(output_path)
+    try:
+        secret_text = Steganography.decode(output_path)
+    except TypeError:
+        print 'error'
+        exit()
     if len(secret_text) == 0:
         print "No secret mesage"
     else:
@@ -127,7 +137,7 @@ def start_chat(spy):
     spy.name = spy.salutation + " " + spy.name
 
 
-    if spy.age > 12 and spy.age < 50:
+    if spy.age > 12 and spy.age <= 50:
 
 
         print "Authentication complete. Welcome " + colored(spy.name,'red') + " age: " \
@@ -140,7 +150,7 @@ def start_chat(spy):
             menu_choice = raw_input(menu_choices)
 
             if len(menu_choice) > 0:
-                menu_choice = int(menu_choice)
+                menu_choice=int(menu_choice)
 
                 if menu_choice == 1:
                     spy.current_status_message = status(spy.current_status_message)
@@ -158,6 +168,7 @@ def start_chat(spy):
     else:
         print 'Sorry you are not of the correct age to be a spy'
 
+
 if y.upper() == "Y":
     start_chat(spy)
 else:
@@ -167,14 +178,26 @@ else:
 
     spy.name = raw_input("Welcome to spy chat, you must tell me your spy name first: ")
 
-    if len(spy.name) > 0:
+    if len(spy.name) > 0 and spy.name.isalpha():
         spy.salutation = raw_input("Should I call you Mr. or Ms.?: ")
 
         spy.age = raw_input("What is your age?")
-        spy.age = int(spy.age)
+        try:
+            spy.age = int(spy.age)
+        except ValueError:
+            print "invalid age"
+            exit()
 
         spy.rating = raw_input("What is your spy rating?")
         spy.rating = float(spy.rating)
+        if spy.rating>4.5:
+            print "great ace"
+        elif spy.rating>3.5 and spy.rating<=4.5:
+            print "you are a good one"
+        elif spy.rating>2.5 and spy.rating<=3.5:
+            print "you can always do better"
+        else:
+            print"you can always use somebody in office"
 
         start_chat(spy)
     else:
