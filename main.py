@@ -152,7 +152,7 @@ def start_chat(spy):
             menu_choices = "What do you want to do? \n 1. Add a status update \n 2. Add a friend \n 3. Send a secret message \n 4. Read a secret message \n 5. Read Chats from a user \n 6. Close Application \n"
             menu_choice = raw_input(menu_choices)
 
-            if len(menu_choice) > 0:
+            if len(menu_choice) > 0 and menu_choice.isdigit():
                 menu_choice=int(menu_choice)
 
                 if menu_choice == 1:
@@ -168,6 +168,8 @@ def start_chat(spy):
                     read_chat_history()
                 else:
                     show_menu = False
+            else:
+                print "invalid number"
     else:
         print 'Sorry you are not of the correct age to be a spy'
 
